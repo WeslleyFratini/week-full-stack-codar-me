@@ -1,6 +1,7 @@
-import { useFormik } from "formik";
-import * as yup from "yup";
-import { Logo } from "./../components";
+import Link from 'next/link'
+import { useFormik } from 'formik'
+import * as yup from 'yup'
+
 import {
   Container,
   Box,
@@ -10,9 +11,42 @@ import {
   FormControl,
   FormLabel,
   FormHelperText,
-} from "@chakra-ui/react";
+} from '@chakra-ui/react'
+
+import { Logo } from '../components'
+import firebase from '../config/firebase'
+
+const validationSchema = yup.object().shape({
+  email: yup.string().email('E-mail inválido').required('Preenchimento obrigatório'),
+  password: yup.string().required('Preenchimento obrigatório'),
+})
 
 export default function Home() {
+  const {
+    values,
+    errors,
+    touched,
+    handleChange,
+    handleBlur,
+    handleSubmit,
+    isSubmitting
+  } = useFormik({
+    onSubmit: async (values, form) => {
+      try {
+        const user = await firebase.auth().signInWithEmailAndPassword(values.email, values.password)
+        console.log(user)
+      } catch (error) {
+        console.log('ERROR:', error)
+      }
+    },
+    validationSchema,
+    initialValues: {
+      email: '',
+      username: '',
+      password: ''
+    }
+  })
+
   return (
     <Container p={4} centerContent>
       <Logo />
@@ -23,25 +57,22 @@ export default function Home() {
       <Box>
         <FormControl id="email" p={4} isRequired>
           <FormLabel>Email</FormLabel>
-          <Input type="email" />
+          <Input size="lg" type="email" value={values.email} onChange={handleChange} onBlur={handleBlur} />
+          {touched.email && <FormHelperText textColor="#e74c3c">{errors.email}</FormHelperText>}
         </FormControl>
 
         <FormControl id="password" p={4} isRequired>
           <FormLabel>Senha</FormLabel>
-          <Input type="password" />
+          <Input size="lg" type="password" value={values.password} onChange={handleChange} onBlur={handleBlur} />
+          {touched.password && <FormHelperText textColor="#e74c3c">{errors.password}</FormHelperText>}
         </FormControl>
 
-        <Box display="flex" flexDirection="row" alignItems="center">
-          <Text>clocker.work/</Text>
-          <FormControl id="username" p={4} isRequired>
-            <Input type="username" />
-          </FormControl>
-        </Box>
-
         <Box p={4}>
-          <Button width="100%">Entrar</Button>
+          <Button colorScheme="blue" width="100%" onClick={handleSubmit} isLoading={isSubmitting}>Entrar</Button>
         </Box>
       </Box>
+
+      <Link href="/signup">Ainda não tem uma conta? Cadastre-se</Link>
     </Container>
-  );
+  )
 }
