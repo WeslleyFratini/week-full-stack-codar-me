@@ -22,6 +22,6 @@
     "yup": "^0.32.9"
   },
   "devDependencies": {
-    "standardjs": "^1.0.0-alpha"
+    
   }
 }
