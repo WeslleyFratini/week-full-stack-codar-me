@@ -1,11 +1,7 @@
-
-
-
-export default function Agenda() {
-    return (
-     <div>
-       Agenda
-     </div>
-    )
-  }
-  
+export default function Agenda () {
+  return (
+    <div>
+      Agenda
+    </div>
+  )
+}

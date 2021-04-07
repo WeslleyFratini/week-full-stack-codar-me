@@ -1,11 +1,7 @@
-
-
-
-export default function Schedule() {
-    return (
-     <div>
-       Schedule
-     </div>
-    )
-  }
-  
+export default function Schedule () {
+  return (
+    <div>
+      Schedule
+    </div>
+  )
+}

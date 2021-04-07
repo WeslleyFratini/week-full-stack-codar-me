@@ -1,3 +1,3 @@
-import logo from './Logo.svg'
+import logo from './logo.svg'
 
 export const Logo = logo
